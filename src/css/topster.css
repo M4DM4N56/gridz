@@ -1,0 +1,90 @@
+:root {
+  /* let users control these later */
+  --gap-size: min(.5vh, .5vw);
+  --background-color: #909090;
+  --rounded-corners: 0%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.topster-grid {
+  display: grid;
+
+  /* grid layout using cols/rows props */
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
+
+  /* maintains squareness for tiles, regardless of m&n */
+  aspect-ratio: calc(var(--cols) / var(--rows));
+
+  /* allows grid to shrink width based on window size */
+  width: min(90vw, 90vh * (var(--cols) / var(--rows)));
+  height: auto;
+
+  max-height: 90vh;               /* max width = 90% of screen height */
+  max-width: 90vw;                /* max width = 90% of screen width */
+  margin: auto;                   /* centers topster */
+  
+  padding: var(--gap-size);       /* applies outside border to topster */
+  gap: var(--gap-size);           /* sets gap between tiles */
+  background-color: var(--background-color);
+}
+
+
+.topster-tile {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #E0E0E0;
+  border-radius: var(--rounded-corners); 
+
+  font-size: 1.2rem;
+  color: #606060;
+  cursor: grab;
+  overflow: hidden;
+}
+
+
+
+
+.topster-tile:hover {
+  background-color: #d3d3d3;
+
+}
+
+.topster-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.topster-placeholder {
+  user-select: none;
+}
+
+.hide {
+  display: none;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 20%;
+  width: 56px;
+  height: 56px;
+  font-size: 48px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.topster-tile:hover .hide {
+  display:block;
+}

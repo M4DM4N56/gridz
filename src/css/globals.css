@@ -16,6 +16,12 @@ body {
   overflow-x: hidden;
 }
 
+
+
+.page-link{
+  color:skyblue;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
