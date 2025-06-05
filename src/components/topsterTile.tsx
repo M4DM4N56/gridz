@@ -11,7 +11,6 @@ type TileProps = {
 };
 
 
-
 export default function TopsterTile({ album, onRemove  }: TileProps) {
 
   if (album){

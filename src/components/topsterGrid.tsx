@@ -1,20 +1,11 @@
+import {useTopster} from "../app/contexts/topsterContext"
 import TopsterTile from "./topsterTile";
 
-type TopsterGridProps = {
-  rows: number;
-  cols: number;
-  tiles: Array<{
-    id: string;
-    album?: {
-      title: string;
-      artist: string;
-      imageUrl: string;
-    };
-  }>;
-  onRemove: (index: number) => void;
-};
 
-export default function TopsterGrid({ rows, cols, tiles, onRemove }: TopsterGridProps) {
+export default function TopsterGrid() {
+  
+  const {rows, cols, tiles, removeAlbum } = useTopster()
+
   return <>
       <div
         className="topster-grid"
@@ -28,7 +19,7 @@ export default function TopsterGrid({ rows, cols, tiles, onRemove }: TopsterGrid
         <TopsterTile 
           key={tile.id} 
           album={tile.album}
-          onRemove={() => onRemove(index)}
+          onRemove={() => removeAlbum(index)}
         />
       ))}
 

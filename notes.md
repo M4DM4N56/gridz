@@ -2,11 +2,11 @@
 
 ## PLANNING
 
-### TOMORROW
-1. improve remove button
-    - make remove button proportionate to album size
-    - better comment remove album function(s)
-2. drag and drop functionality to albums
+### SHORT-TERM
+2. get sidebar behavior down
+    - right location and size for different windows
+    - get sidebar grid working
+3. drag and drop functionality 
     - look into "react-dnd" or "dnd-kit"
 
 ### MVP

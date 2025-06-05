@@ -1,0 +1,30 @@
+
+/* The outer layout wrapper */
+.topster-layout {
+  display: flex;
+  flex-direction: column; /* default for portrait mode */
+  width: 100%;
+  height: 100%;
+}
+
+/* When the screen is wider than it is tall, switch to row layout */
+@media (min-aspect-ratio: 1/1) {
+  .topster-layout {
+    flex-direction: row;
+  }
+}
+
+/* Sidebar itself */
+.sidebar {
+  background-color: #909090;
+  width: 100%;
+  height: 100%; /* default height for bottom placement */
+}
+
+/* When in row mode, make sidebar vertical */
+@media (min-aspect-ratio: 1/1) {
+  .sidebar {
+    width: 800px;
+    height: 800px;
+  }
+}
