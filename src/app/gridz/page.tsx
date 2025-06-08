@@ -2,30 +2,39 @@
 
 import Link from "next/link";
 
-import "../../css/globals.css"
-import "../../css/page-layout.css"
+import { TopsterProvider } from "../contexts/topsterContext";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
-import {TopsterProvider} from "../contexts/topsterContext"
-import TopsterGrid from "../../components/topsterGrid";
-import SideBar from "../../components/sideBar";
+import Sidebar from "../../components/sideBar"
+import TopsterGrid from "../../components/topsterGrid"
 
-export default function page(){
-   
-    return <>
-        <html>
-            <body>
+import "../../css/globals.css";
+import "../../css/page-layout.css";
 
-                <TopsterProvider>
-                    <h1>gridz</h1>
-                    <Link href="/" className = "page-link">home</Link>
-                    
-                    <div className = "topster-layout">
-                        <SideBar/>
-                        <TopsterGrid/>    
-                    </div>
-                </TopsterProvider>
-            
-            </body>
-        </html>
-    </>
+
+export default function page() {
+  return (
+    <html>
+      <body>
+
+        <DndProvider backend={HTML5Backend}>
+          <TopsterProvider>
+
+            <h1>gridz</h1>
+            <Link href="/" className="page-link">home</Link>
+
+            <div className="topster-layout">
+              <Sidebar />
+              <div className="topster-grid-wrapper">
+                <TopsterGrid />
+              </div>
+            </div>
+
+          </TopsterProvider>
+        </DndProvider>
+
+      </body>
+    </html>
+  );
 }

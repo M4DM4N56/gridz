@@ -1,30 +1,54 @@
-
-/* The outer layout wrapper */
 .topster-layout {
   display: flex;
-  flex-direction: column; /* default for portrait mode */
-  width: 100%;
-  height: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-/* When the screen is wider than it is tall, switch to row layout */
-@media (min-aspect-ratio: 1/1) {
+/* Landscape: sidebar left, 1/3 width, same height as grid */
+@media (min-aspect-ratio: 4/3) {
   .topster-layout {
     flex-direction: row;
+    align-items: stretch; /* Ensure equal height */
+    height: 100%; /* Allow child height control */
+  }
+
+  .sidebar {
+    width: 30vw;      /* 1/3 of screen width */
+    flex-shrink: 0;   /* Prevent sidebar from shrinking */
+    order: 0;
+  }
+
+  .topster-grid-wrapper {
+    width: 67vw; /* 2/3 of screen width */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    order: 1;
+    height: auto;
   }
 }
 
-/* Sidebar itself */
-.sidebar {
-  background-color: #909090;
-  width: 100%;
-  height: 100%; /* default height for bottom placement */
-}
+/* Portrait: sidebar below, full width, centered */
+@media (max-aspect-ratio: 4/3) {
+  .topster-layout {
+    flex-direction: column;
+    align-items: center;
+  }
 
-/* When in row mode, make sidebar vertical */
-@media (min-aspect-ratio: 1/1) {
+  .topster-grid-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    order: 0;
+  }
+
   .sidebar {
-    width: 800px;
-    height: 800px;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Optional: center content */
+    margin-top: 1rem;
+    order: 1;
   }
 }
