@@ -10,12 +10,14 @@
 
 
 ### SHORT-TERM
-1. add a discrete slider for row/col settings
-    - change on-hover for sidebar albums - maybe to a popping outline? 
-2. add extra settings
+1. comment and comprehend searchAlbum() code
+--push--
+2. change sidebar buttons to tabs
+3. add extra settings to the sidebar
     - rounded corners (slider)
     - gap size by pixels (slider)
     - custom background color (look into rgb popup for users)
+        - https://www.npmjs.com/package/react-colorful
 
 
 ### LONG-TERM
@@ -24,13 +26,15 @@
     - add functionality to drag them in
         - look into "react-dnd" or "dnd-kit"
 2. connect to last.fm api and add search functionality
+---------------------------DONE---------------------------
 3. make settings tab for dimensions, title(s), background, font
 
-
-4. connect to firebase and add auth for persistent data
+4. improve on non-topster pages and header
+5. connect to firebase and add auth for persistent data
     - topsters will be linked to gmail accounts via firebase auth
-5. make multiple topsters possible per account
-6. deploy site??
+6. make multiple topsters possible per account 
+
+deploy site??
 
 ---------------------------------------------------------------------------------------------
 

@@ -27,7 +27,7 @@ export default function SideBarTile({ album, onClick }: TileProps) {
             className="sidebar-tile" 
             onClick={onClick} 
         > 
-            <img src={album.imageUrl} alt={album.title}/>
+            <img src={album.imageUrl} />
         </div>
     }
 

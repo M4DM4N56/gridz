@@ -1,6 +1,6 @@
 :root {
-  --gap-size: min(.5vh, .5vw);
-  --background-color: #1e1e1e; /* Match sidebar dark */
+  --gap-size: 4px;
+  --background-color: #1e1e1e;
   --tile-bg: #2a2a2a;
   --tile-border: #444;
   --tile-hover: #333;

@@ -45,10 +45,10 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
 
     // change row/cols -- only between 1-10
     function changeRows(change: number){
-        if (numRows + change <= MAX_DIMENSION && numRows + change >= 1) { setNumRows(numRows + change) }
+        setNumRows(change)
     }
     function changeCols(change: number){
-        if (numCols + change <= MAX_DIMENSION && numCols + change >= 1) { setNumCols(numCols + change) }
+        setNumCols(change)
     }
 
 

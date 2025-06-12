@@ -3,14 +3,10 @@
 import "../css/sidebar.css"
 
 import {useTopster} from "../app/contexts/topsterContext"
-import { useState } from "react";
+import React, { useState } from "react";
 
 import SideBarTile from "./sideBarTile";
-
-type Tile = {
-  id: string;
-  album?: album;
-};
+import { searchAlbum } from "@/services/lastfm";
 
 type album = {
   title: string;
@@ -18,75 +14,136 @@ type album = {
   imageUrl: string;
 };
 
-const newAlbum = {
-    title: "Abbey Road",
-    artist: "The Beatles",
-    imageUrl: "AbbeyRoad.jpg",
-};
-
-const otherNewAlbum = {
-    title: "Weezer Blue",
-    artist: "Weezer",
-    imageUrl: "Weezer.jpg",
-};
-
-
-export default function sideBar(){
-
+export default function sideBar() {
     const [tab, setTab] = useState("search");
+
     const { rows, cols, changeRows, changeCols, addAlbum } = useTopster();
 
-    const [tiles, setTiles] = useState<Tile[]>(() =>
-        Array.from({ length: 10 * 5 }, (_, i) => ({
-            id: `tile-${i}`, 
-            album: i === 0 ? newAlbum : otherNewAlbum,
-        }
-    ))); 
+    const [query, setQuery] = useState("");
+    const [searchResults, setSearchResults] = useState<album[]>([]);
 
-    return <>
-        <div className = "sidebar">
-            <div className = "sidebar-buttons">
-            <button onClick={() => setTab("settings")}>Settings</button>
-            <button onClick={() => setTab("search")}>Search Albums</button>
-            </div>
-            {(tab === "search") ? ( <>
-                <div>
-                    <input placeholder="Search for albums..."/>
-                </div>
+    const handleRowSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
+        changeRows(Number(e.target.value));
+    };
 
-                <div
-                    className="sidebar-tile-grid"
-                    style={{
-                    '--rows': 10,
-                    '--cols': 5,
-                    } as React.CSSProperties}
-                >
+    const handleColSlider = (e: React.ChangeEvent<HTMLInputElement>) => {
+        changeCols(Number(e.target.value));
+    };
+
+
+    function isValidUrl(url: string): boolean {
+        try {
+            // try to construct valid url
+            const parsed = new URL(url);
+            return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } 
+        catch { return false; }
+    }
+
+
+    const handleSearch = async () => {
+
+        // if query is just white spaces, ignore
+        if (!query.trim()) return;
         
-                {tiles.map((tile) => (
-                    <SideBarTile 
-                        key={tile.id} 
-                        album={tile.album} 
-                        onClick={() => { if (tile.album) addAlbum(tile.album)}} // if album, add it upon clicking
-                    />
-                ))}
+        try {
+            const results = await searchAlbum(query);
+            const albums = results.albummatches.album.map((item: any) => {
+                // find the image with size "large", falling back to "medium", then to no image
+                const imageArray = item.image || [];
+                const imageUrl = imageArray.find((img: any) => img.size === "large")?.["#text"]
+                            || imageArray.find((img: any) => img.size === "medium")?.["#text"]
+                            || "";
 
-                </div>
+                // recreate album type with item's name, artist, and imageURL
+                return {
+                    title: item.name,
+                    artist: item.artist,
+                    imageUrl: imageUrl.trim(),
+                };
+            
+            // filter out items with missing/invalid imageURLs
+            }).filter((album: album) => album.imageUrl && isValidUrl(album.imageUrl));
+                setSearchResults(albums);
+        } 
+        catch (error) {
+            console.error("Search failed:", error);
+            setSearchResults([]);
+        }
+    };
 
-                </>) : (<>
-                
+    // when enter is clicked, submit query to api
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handleSearch();
+        }
+    };
+
+    return (
+        <div className="sidebar">
+            <div className="sidebar-buttons">
+                <button onClick={() => setTab("settings")}>Settings</button>
+                <button onClick={() => setTab("search")}>Search Albums</button>
+            </div>
+
+            {tab === "search" ? (
+                <>
                     <div>
-                        <button onClick={() => changeRows(-1)}>-rows</button>
-                        <span>{rows}</span>
-                        <button onClick={() => changeRows(+1)}>+rows</button>
+                        <input
+                            placeholder="Search for albums..."
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                        />
+                        <button onClick={handleSearch}>Search</button>
                     </div>
-                    <div>
-                        <button onClick={() => changeCols(-1)}>-cols</button>
-                        <span>{cols}</span>
-                        <button onClick={() => changeCols(+1)}>+cols</button>
+
+                    <div
+                        className="sidebar-tile-grid"
+                        style={
+                            {
+                                "--rows": 10,
+                                "--cols": 5,
+                            } as React.CSSProperties
+                        }
+                    >
+                        {searchResults.map((album, index) => (
+                            <SideBarTile
+                                key={`search-result-${index}`}
+                                album={album}
+                                onClick={() => addAlbum(album)}
+                            />
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <>
+                    <div className="sliderSetting">
+                        <p>Rows</p>
+                        <input
+                            type="range"
+                            min="1"
+                            max="10"
+                            value={rows}
+                            onChange={handleRowSlider}
+                            className="slider"
+                        />
+                        <p>{rows}</p>
+                    </div>
+                    <div className="sliderSetting">
+                        <p>Columns</p>
+                        <input
+                            type="range"
+                            min="1"
+                            max="10"
+                            value={cols}
+                            onChange={handleColSlider}
+                            className="slider"
+                        />
+                        <p>{cols}</p>
                     </div>
                 </>
             )}
-
         </div>
-    </>
+    );
 }

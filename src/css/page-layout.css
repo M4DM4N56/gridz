@@ -21,7 +21,7 @@
   }
 
   .topster-grid-wrapper {
-    width: 67vw; /* 2/3 of screen width */
+    width: 60vw; /* 2/3 of screen width */
     display: flex;
     justify-content: center;
     align-items: flex-start;
