@@ -10,14 +10,19 @@
 
 
 ### SHORT-TERM
-1. comment and comprehend searchAlbum() code
---push--
+
+1. login/sign up user flow
+    - ensure user data (gridz, pfp, etc is linked with account)
+2. profile page
+    - has profile picture + username
+    - has navbar (redirects to gridz/profile/search)
+
 2. change sidebar buttons to tabs
 3. add extra settings to the sidebar
     - rounded corners (slider)
     - gap size by pixels (slider)
     - custom background color (look into rgb popup for users)
-        - https://www.npmjs.com/package/react-colorful
+        - https://www.npmjs.com/package/react-colorful or <input type="color">
 
 
 ### LONG-TERM

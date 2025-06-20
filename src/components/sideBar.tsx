@@ -2,7 +2,7 @@
 
 import "../css/sidebar.css"
 
-import {useTopster} from "../app/contexts/topsterContext"
+import {useTopster} from "../contexts/topsterContext"
 import React, { useState } from "react";
 
 import SideBarTile from "./sideBarTile";

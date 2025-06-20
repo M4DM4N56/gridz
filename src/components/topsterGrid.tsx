@@ -1,4 +1,4 @@
-import {useTopster} from "../app/contexts/topsterContext"
+import {useTopster} from "../contexts/topsterContext"
 import TopsterTile from "./topsterTile";
 
 

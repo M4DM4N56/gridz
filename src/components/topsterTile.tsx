@@ -1,5 +1,5 @@
 import { useDrag, useDrop } from 'react-dnd';
-import { useTopster, type Album } from '../app/contexts/topsterContext';
+import { useTopster, type Album } from '../contexts/topsterContext';
 
 import "../css/topster.css";
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { TopsterProvider } from "../contexts/topsterContext";
+import { TopsterProvider } from "../../contexts/topsterContext";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
@@ -26,9 +26,11 @@ export default function page() {
 
             <div className="topster-layout">
               <Sidebar />
+
               <div className="topster-grid-wrapper">
                 <TopsterGrid />
               </div>
+              
             </div>
 
           </TopsterProvider>
