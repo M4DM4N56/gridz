@@ -82,65 +82,61 @@ export default function HomePage() {
   };
 
   return <>
-    <html>
-      <body>
 
-        <div className="auth-page">
-          <div className="auth-left">
-            <h1 className="logo">gridz</h1>
-            <p className="tagline">Create grids and show off your taste!</p>
-          </div>
+    <div className="auth-page">
+      <div className="auth-left">
+        <h1 className="logo">gridz</h1>
+        <p className="tagline">Create grids and show off your taste!</p>
+      </div>
 
-          <div className="auth-right">
-            {!isNewUser ? (
-              <>
-                <form onSubmit={(e) => { e.preventDefault(); handleAuth(); }}>
-                  <input
-                    className="auth-input"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                  <input
-                    className="auth-input"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <button className="auth-button" type="submit">Submit</button>
-                </form>
-              </>
-            ) : (
-              <>
-                <div className="username-container">
-                  <p>Welcome new user! Let's create your username</p>
-                  <form onSubmit={(e) => { e.preventDefault(); handleUsernameSubmit(); }}>
-                    <input
-                      className="auth-input"
-                      type="text"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <button className="auth-button" type="submit">Submit Username</button>
-                  </form>
-                </div>
-              </>
-            )}
+      <div className="auth-right">
+        {!isNewUser ? (
+          <>
+            <form onSubmit={(e) => { e.preventDefault(); handleAuth(); }}>
+              <input
+                className="auth-input"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                className="auth-input"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button className="auth-button" type="submit">Submit</button>
+            </form>
+          </>
+        ) : (
+          <>
+            <div className="username-container">
+              <p>Welcome new user! Let's create your username</p>
+              <form onSubmit={(e) => { e.preventDefault(); handleUsernameSubmit(); }}>
+                <input
+                  className="auth-input"
+                  type="text"
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <button className="auth-button" type="submit">Submit Username</button>
+              </form>
+            </div>
+          </>
+        )}
 
-            {wrongPasswordAttempted && (
-              <button className="auth-button" onClick={() => router.push("/reset-password")}>
-                Forgot Password?
-              </button>
-            )}
+        {wrongPasswordAttempted && (
+          <button className="auth-button" onClick={() => router.push("/reset-password")}>
+            Forgot Password?
+          </button>
+        )}
 
-            {error && <p className="error">{error}</p>}
-          </div>
-        </div>
+        {error && <p className="error">{error}</p>}
+      </div>
+    </div>
 
-      </body>
-    </html>
   </>
 }

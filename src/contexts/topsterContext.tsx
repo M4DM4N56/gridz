@@ -1,6 +1,9 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../config/firebase";
+import { saveTopster } from "@/lib/firebase";
 
 const MAX_DIMENSION: number = 10;
 // create topster context, defaulting to null
@@ -17,6 +20,7 @@ type Tile = {
   album?: Album;
 };
 
+
 type TopsterContextType = {
   rows: number;
   cols: number;
@@ -27,6 +31,7 @@ type TopsterContextType = {
   addAlbum: (album: Album) => void;
   removeAlbum: (index: number) => void;
   placeAlbum: (album: Album, toIndex: number, fromIndex?: number) => void;
+  setHasLoaded: (value: boolean) => void;
 };
 
 // must have children as arguments so children can inherit the provider's context
@@ -36,12 +41,69 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
     const [numCols, setNumCols] = useState(5);
     const [numRows, setNumRows] = useState(5);
 
+    // has loaded checks if user has logged in yet. only updates topster if has loaded
+    const [hasLoaded, setHasLoaded] = useState(false);
+
+    const [userId, setUserId] = useState<string | null>(null);
+
     // create array of tiles, maxdim x maxdim, set all albums to undefined
     const [tiles, setTiles] = useState<Tile[]>(() =>
       Array.from({ length: MAX_DIMENSION * MAX_DIMENSION }, (_, i) => ({
           id: `tile-${i}`, 
           album: undefined,
     }))); 
+
+
+    // watch for auth
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        // if user is logged in, set the user
+        if (user?.uid) {
+          console.log("user:", user.uid);
+          setUserId(user.uid);
+        }
+        // user state changed, no user logged in
+        else { console.log("auth state changed. no user logged in") }
+      });
+      // call function unconditionally
+      return () => unsubscribe();
+    }, []);
+
+    // autosave
+    useEffect(() => {
+      // if no user or not loaded, dont autosave
+      if (!userId || !hasLoaded) {
+        console.log("autosave skipped");
+        return;
+      }
+
+      // 
+      const timeout = setTimeout(() => {
+        // clean tiles for firestore storage
+        // iterate through each tile
+        const cleanTiles = tiles.map(tile => ({
+          id: tile.id,
+          album: tile.album ?? null, // firestore doesnt accept undefined. if tile doesnt exist, set to null instead
+        }));
+
+        // create topsterData
+        const topsterData = {
+          tiles: cleanTiles,
+          rows: numRows,
+          cols: numCols,
+        };
+
+        console.log("saving topster:", topsterData); 
+
+        // call saveTopster in lib/firebase with our new data
+        saveTopster(userId, topsterData);
+      }, 1000);
+
+      // only call timeout once after each autosave so function isnt spammed 
+      return () => clearTimeout(timeout);
+      }, [tiles, numRows, numCols, userId, hasLoaded]); // when any of these are changed, run effect
+
+
 
     // change row/cols -- only between 1-10
     function changeRows(change: number){
@@ -151,6 +213,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
         addAlbum,
         removeAlbum,
         placeAlbum,
+        setHasLoaded,
       }}
     >
       {children}

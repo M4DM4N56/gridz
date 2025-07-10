@@ -60,91 +60,87 @@ export default function PasswordResetPage() {
   
   if (stage === "newPassword") {
     return <>
-      <html>
-        <body>
-          <div className="auth-page">
-            <div className="auth-left">
-              <h1 className="logo">gridz</h1>
-              <p className="tagline">Reset your password</p>
-            </div>
-            <div className="auth-right">
-              <p>Email: {email}</p>
-              <input
-                className="auth-input"
-                type="password"
-                placeholder="Enter new password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <button className="auth-button" onClick={handleConfirmReset}>Submit</button>
-              {error && <p className="error">{error}</p>}
-            </div>
-          </div>
-        </body>
-      </html>
+      <div className="auth-page">
+
+        <div className="auth-left">
+          <h1 className="logo">gridz</h1>
+          <p className="tagline">Reset your password</p>
+        </div>
+
+        <div className="auth-right">
+          <p>Email: {email}</p>
+          <input
+            className="auth-input"
+            type="password"
+            placeholder="Enter new password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+
+          <button className="auth-button" onClick={handleConfirmReset}>Submit</button>
+          {error && <p className="error">{error}</p>}
+        </div>
+        
+      </div>
     </>
   }
 
   if (stage === "email") {
     return <>
-      <html>
-        <body>
-          <div className="auth-page">
-            <div className="auth-left">
-              <h1 className="logo">gridz</h1>
-              <p className="tagline">Request Password Reset</p>
-            </div>
-            <div className="auth-right">
-              <input
-                className="auth-input"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button className="auth-button" onClick={handleSendResetEmail}>Send Reset Email</button>
-              {error && <p className="error">{error}</p>}
-            </div>
-          </div>
-        </body>
-      </html>
+      <div className="auth-page">
+        <div className="auth-left">
+          <h1 className="logo">gridz</h1>
+          <p className="tagline">Request Password Reset</p>
+        </div>
+
+        <div className="auth-right">
+          <input
+            className="auth-input"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <button className="auth-button" onClick={handleSendResetEmail}>Send Reset Email</button>
+          {error && <p className="error">{error}</p>}
+        </div>
+
+      </div>
     </>
   }
 
   if (stage === "done") {
     return <>
-      <html>
-        <body>
-          <div className="auth-page">
-            <div className="auth-left">
-              <h1 className="logo">gridz</h1>
-              <p className="tagline">Success!</p>
-            </div>
-            <div className="auth-right">
-              <p>Success! Please check your email or try signing in again.</p>
-            </div>
-          </div>
-        </body>
-      </html>
+      <div className="auth-page">
+
+        <div className="auth-left">
+          <h1 className="logo">gridz</h1>
+          <p className="tagline">Success!</p>
+        </div>
+
+        <div className="auth-right">
+          <p>Success! Please check your email or try signing in again.</p>
+        </div>
+      </div>
     </>
   }
 
   // if something somehow went wrong, give generic error page
   return <>
-    <html>
-      <body>
 
-        <div className="auth-page">
-          <div className="auth-left">
-            <h1 className="logo">gridz</h1>
-            <p className="tagline">Oops!</p>
-          </div>
-          <div className="auth-right">
-            <p>Something went wrong. Please try again.</p>
-          </div>
-        </div>
+    <div className="auth-page">
       
-      </body>
-    </html>
+      <div className="auth-left">
+        <h1 className="logo">gridz</h1>
+        <p className="tagline">Oops!</p>
+      </div>
+
+      <div className="auth-right">
+        <p>Something went wrong. Please try again.</p>
+      </div>
+
+    </div>
+      
   </>
 }

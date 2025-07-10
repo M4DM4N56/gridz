@@ -12,14 +12,16 @@ import TopsterGrid from "../../components/topsterGrid"
 import "../../css/globals.css";
 import "../../css/page-layout.css";
 
+import TopsterInitializer from "../../components/topsterInitializer"
 
-export default function page() {
-  return (
-    <html>
-      <body>
+export default function Page() {
+
+  return <div>
 
         <DndProvider backend={HTML5Backend}>
           <TopsterProvider>
+
+            <TopsterInitializer />
 
             <h1>gridz</h1>
             <Link href="/" className="page-link">home</Link>
@@ -36,7 +38,5 @@ export default function page() {
           </TopsterProvider>
         </DndProvider>
 
-      </body>
-    </html>
-  );
+  </div>
 }
