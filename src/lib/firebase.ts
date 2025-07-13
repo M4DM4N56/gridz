@@ -3,6 +3,7 @@ import { db } from "../config/firebase";
 
 
 export const saveTopster = async (uid: string, data: any) => {
+
   // if no user found, print warning
   if (!uid) {
     console.warn("tried to save topster without a UID");

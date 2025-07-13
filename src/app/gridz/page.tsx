@@ -5,6 +5,7 @@ import Link from "next/link";
 import { TopsterProvider } from "../../contexts/topsterContext";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import RequireAuth from "../../components/requireAuth";
 
 import Sidebar from "../../components/sideBar"
 import TopsterGrid from "../../components/topsterGrid"
@@ -18,25 +19,27 @@ export default function Page() {
 
   return <div>
 
-        <DndProvider backend={HTML5Backend}>
-          <TopsterProvider>
+        <RequireAuth>
+          <DndProvider backend={HTML5Backend}>
+            <TopsterProvider>
 
-            <TopsterInitializer />
+              <TopsterInitializer />
 
-            <h1>gridz</h1>
-            <Link href="/" className="page-link">home</Link>
+              <h1>gridz</h1>
+              <Link href="/account" className="page-link">Profile</Link>
 
-            <div className="topster-layout">
-              <Sidebar />
+              <div className="topster-layout">
+                <Sidebar />
 
-              <div className="topster-grid-wrapper">
-                <TopsterGrid />
+                <div className="topster-grid-wrapper">
+                  <TopsterGrid />
+                </div>
+                
               </div>
-              
-            </div>
 
-          </TopsterProvider>
-        </DndProvider>
+            </TopsterProvider>
+          </DndProvider>
+        </RequireAuth>
 
   </div>
 }

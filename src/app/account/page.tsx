@@ -7,12 +7,14 @@ import { useRouter } from "next/navigation";
 
 import { useEffect, useState }  from "react";
 import { auth } from "../../config/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import RequireAuth from "../../components/requireAuth";
 
 
 export default function Page(){
 
     const [username, setUsername] = useState("");
+    const user = auth.currentUser;
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -24,20 +26,29 @@ export default function Page(){
 
     const router = useRouter();
 
-
     
     return <div>
+
+        <RequireAuth>
                 
-        {username && ( <>
-            <h1>Welcome, {username}!</h1> 
-        </>)}
-        <Link href="/gridz" className = "page-link">Make a grid</Link>
-        <button onClick={() =>  {
-            console.log("button clicked");
-            router.push("/gridz");                        
-        }}>
-            Go to Gridz
-        </button>
+            {username && ( <>
+                <h1>Welcome, {username}!</h1> 
+            </>)}
+            
+            <button onClick = { async () =>  {
+                await signOut(auth);
+                setTimeout(() => router.push("/"), 200); 
+            }}>
+                Log Out
+            </button>
+
+            <button onClick={() =>  {
+                router.push("/gridz");                        
+            }}>
+                Go to Gridz
+            </button>
+
+        </RequireAuth>
 
     </div>
 

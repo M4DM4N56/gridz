@@ -10,26 +10,42 @@
 
 
 ### SHORT-TERM
-1. see if we can have usernames display at firebase instead of "PFI0LwrohPcA0rNVPOYluRBoel32"
-2. update user flow
-    - switch home button on gridz to account button, add 'log out' button on account
-    - if user not logged in and tried to access any page, redirect to home page
-3. keep users logged in until they log out
-    - default users to their account page
 ----------------------------------- PUSH -----------------------------------
-4. profile page
-    - has profile picture + username
-    - has navbar (redirects to gridz/profile/search)
-5. update firestore and account page so user can store multiple topsters
+
+2. update firestore and account page so user can store multiple topsters
+    - gridz page
+        - top of page should prompt for gridz title
+        - must make firebase take this input as "title"
+        - default to "[user]'s topster #x" where x is the number of topsters the user has saved 
+    - account page 
+        - should display a button for each topster to edit
+            - extra button for 'delete topster' option. maybe prompt again for safety
+        - add a "create new topster button"
+        - restyle account page
+        
 ----------------------------------- PUSH -----------------------------------
-6. update topster
+
+3. let users search up usernames
+    - unique usernames?
+    - "search" on the navbar at all times
+    - users must enter the exact username of search
+    - brings them to their account page
+        - same as account page, but edit privileges removed
+
+----------------------------------- PUSH -----------------------------------
+
+4. add some basic polish!
+    - update log in page buttons + input fields + error messages
+        - fix mobile layout
     - change sidebar buttons to tabs
     - add extra settings to the sidebar
         - rounded corners (slider)
         - gap size by pixels (slider)
         - custom background color (look into rgb popup for users)
-            - https://www.npmjs.com/package/react-colorful or <input type="color">
+            - https://www.npmjs.com/package/react-colorful or `<input type="color">`
+
 ------------------------------ PUSH + DEPLOY -------------------------------
+
 
 
 ### LONG-TERM

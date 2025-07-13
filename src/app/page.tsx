@@ -1,14 +1,14 @@
-// page.tsx
 "use client";
 
 import "../css/login.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "../config/firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 
@@ -23,6 +23,18 @@ export default function HomePage() {
 
   const [wrongPasswordAttempted, setWrongPasswordAttempted] = useState(false);
   const [error, setError] = useState("");
+
+  // auto redirect
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // if user is logged in, automatically bring them to account page
+      if (user) {
+        console.log("redirecting user")
+        router.replace("/account")
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleAuth = async () => {
     if (!email || !password) {

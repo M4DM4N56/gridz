@@ -45,6 +45,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
     const [hasLoaded, setHasLoaded] = useState(false);
 
     const [userId, setUserId] = useState<string | null>(null);
+    const [userEmail, setUserEmail] = useState<string | null>(null);
 
     // create array of tiles, maxdim x maxdim, set all albums to undefined
     const [tiles, setTiles] = useState<Tile[]>(() =>
@@ -61,6 +62,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
         if (user?.uid) {
           console.log("user:", user.uid);
           setUserId(user.uid);
+          setUserEmail(user.email)
         }
         // user state changed, no user logged in
         else { console.log("auth state changed. no user logged in") }
@@ -91,6 +93,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
           tiles: cleanTiles,
           rows: numRows,
           cols: numCols,
+          email: userEmail,
         };
 
         console.log("saving topster:", topsterData); 
