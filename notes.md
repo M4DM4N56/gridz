@@ -4,28 +4,25 @@
 ### MVP
 - log in functionality (firebase auth)
 - one topster grid per account
-- search  Last.fm albums
+- search Last.fm albums
 - place albums into grid
 - download the topster as image
 
 
 ### SHORT-TERM
------------------------------------ PUSH -----------------------------------
 
-2. update firestore and account page so user can store multiple topsters
-    - gridz page
-        - top of page should prompt for gridz title
-        - must make firebase take this input as "title"
-        - default to "[user]'s topster #x" where x is the number of topsters the user has saved 
+1. refactor code and improve account page
+        - gridz css files can use some consolidation
     - account page 
         - should display a button for each topster to edit
             - extra button for 'delete topster' option. maybe prompt again for safety
         - add a "create new topster button"
         - restyle account page
-        
+    - email address + username not storing at userid/ its storing at userid/topster
+
 ----------------------------------- PUSH -----------------------------------
 
-3. let users search up usernames
+2. let users search up usernames
     - unique usernames?
     - "search" on the navbar at all times
     - users must enter the exact username of search
@@ -34,7 +31,7 @@
 
 ----------------------------------- PUSH -----------------------------------
 
-4. add some basic polish!
+3. add some basic polish!
     - update log in page buttons + input fields + error messages
         - fix mobile layout
     - change sidebar buttons to tabs

@@ -1,9 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../config/firebase";
-import { saveTopster } from "@/lib/firebase";
+import { saveTopster } from "../lib/firebase";
+import { useUser } from "../contexts/userContext"
 
 const MAX_DIMENSION: number = 10;
 // create topster context, defaulting to null
@@ -20,11 +19,13 @@ type Tile = {
   album?: Album;
 };
 
-
 type TopsterContextType = {
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
   rows: number;
   cols: number;
   tiles: Tile[];
+  topsterId: string,
   setTiles: React.Dispatch<React.SetStateAction<Tile[]>>;
   changeRows: (delta: number) => void;
   changeCols: (delta: number) => void;
@@ -34,8 +35,16 @@ type TopsterContextType = {
   setHasLoaded: (value: boolean) => void;
 };
 
+type TopsterProviderProps = {
+  topsterId: string;
+  children: React.ReactNode;
+};
+
 // must have children as arguments so children can inherit the provider's context
-export function TopsterProvider({children}: {children: React.ReactNode}){
+export function TopsterProvider({topsterId, children}: TopsterProviderProps){
+
+    const [title, setTitle] = useState<string>("untitled");
+    const {user, userId, userEmail} = useUser();
 
     // set up default dimensions for row/col
     const [numCols, setNumCols] = useState(5);
@@ -43,9 +52,6 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
 
     // has loaded checks if user has logged in yet. only updates topster if has loaded
     const [hasLoaded, setHasLoaded] = useState(false);
-
-    const [userId, setUserId] = useState<string | null>(null);
-    const [userEmail, setUserEmail] = useState<string | null>(null);
 
     // create array of tiles, maxdim x maxdim, set all albums to undefined
     const [tiles, setTiles] = useState<Tile[]>(() =>
@@ -55,26 +61,10 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
     }))); 
 
 
-    // watch for auth
-    useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-        // if user is logged in, set the user
-        if (user?.uid) {
-          console.log("user:", user.uid);
-          setUserId(user.uid);
-          setUserEmail(user.email)
-        }
-        // user state changed, no user logged in
-        else { console.log("auth state changed. no user logged in") }
-      });
-      // call function unconditionally
-      return () => unsubscribe();
-    }, []);
-
     // autosave
     useEffect(() => {
       // if no user or not loaded, dont autosave
-      if (!userId || !hasLoaded) {
+      if (!userId || !hasLoaded || !topsterId) {
         console.log("autosave skipped");
         return;
       }
@@ -90,6 +80,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
 
         // create topsterData
         const topsterData = {
+          title,
           tiles: cleanTiles,
           rows: numRows,
           cols: numCols,
@@ -99,12 +90,12 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
         console.log("saving topster:", topsterData); 
 
         // call saveTopster in lib/firebase with our new data
-        saveTopster(userId, topsterData);
+        saveTopster(userId, topsterId, topsterData);
       }, 1000);
 
       // only call timeout once after each autosave so function isnt spammed 
       return () => clearTimeout(timeout);
-      }, [tiles, numRows, numCols, userId, hasLoaded]); // when any of these are changed, run effect
+      }, [tiles, numRows, numCols, title, userId, hasLoaded, topsterId]); // when any of these are changed, run effect
 
 
 
@@ -210,6 +201,7 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
         rows: numRows,
         cols: numCols,
         tiles,
+        topsterId,
         setTiles, 
         changeRows,
         changeCols,
@@ -217,6 +209,8 @@ export function TopsterProvider({children}: {children: React.ReactNode}){
         removeAlbum,
         placeAlbum,
         setHasLoaded,
+        title,
+        setTitle,
       }}
     >
       {children}

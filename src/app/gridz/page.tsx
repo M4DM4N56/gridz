@@ -5,25 +5,33 @@ import Link from "next/link";
 import { TopsterProvider } from "../../contexts/topsterContext";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { useSearchParams } from "next/navigation";
 import RequireAuth from "../../components/requireAuth";
 
 import Sidebar from "../../components/sideBar"
 import TopsterGrid from "../../components/topsterGrid"
+import TopsterTitleEditor from "../../components/topsterTitleEditor";
 
 import "../../css/globals.css";
 import "../../css/page-layout.css";
+import "../../css/topsterTitle.css"
 
 import TopsterInitializer from "../../components/topsterInitializer"
 
 export default function Page() {
 
+  const searchParams = useSearchParams();
+  const topsterId = searchParams.get("id");
+
+  if (!topsterId) return <p>Error: No topster ID provided.</p>;
+
   return <div>
 
         <RequireAuth>
           <DndProvider backend={HTML5Backend}>
-            <TopsterProvider>
+            <TopsterProvider topsterId={topsterId}>
 
-              <TopsterInitializer />
+              <TopsterInitializer topsterId={topsterId}/>
 
               <h1>gridz</h1>
               <Link href="/account" className="page-link">Profile</Link>
@@ -32,7 +40,10 @@ export default function Page() {
                 <Sidebar />
 
                 <div className="topster-grid-wrapper">
-                  <TopsterGrid />
+                  <div className="topster-content">
+                    <TopsterTitleEditor />
+                    <TopsterGrid />
+                  </div>
                 </div>
                 
               </div>

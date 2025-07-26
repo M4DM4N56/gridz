@@ -1,0 +1,29 @@
+.topster-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.topster-title-editor {
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.topster-title-editor input {
+  font-size: 1.5rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.topster-title-editor input:focus {
+  border-color: #0070f3;
+  outline: none;
+}
