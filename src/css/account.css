@@ -94,3 +94,22 @@
 .button-card:hover .delete-button {
   display: flex;
 }
+
+.button-card-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.topster-preview-placeholder {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #666;
+	background-color: #ccc;
+	font-size: 0.8rem;
+	text-align: center;
+}

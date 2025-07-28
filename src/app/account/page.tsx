@@ -17,6 +17,7 @@ import { useUser } from "../../contexts/userContext"
 type TopsterMeta = {
 	id: string;
 	title: string;
+	thumbnail?: string;
 };
 
 export default function Page() {
@@ -25,18 +26,25 @@ export default function Page() {
 
   	const [topsters, setTopsters] = useState<TopsterMeta[]>([]);
 
-  	// get user + and their topsters
+  	// get user + their topsters
   	useEffect(() => {
 		const getTopsters = async () => {
-		if (!userId) return
+			if (!userId) return
 
-		// get user's topsters
-		const snapshot = await getDocs(collection(db, "users", userId, "topsters"));
-		const topsterList = snapshot.docs.map((doc) => ({
-			id: doc.id,
-			title: doc.data().title,
-		}));
-		setTopsters(topsterList)
+			// get user's topsters
+			const snapshot = await getDocs(collection(db, "users", userId, "topsters"));
+			const topsterList: TopsterMeta[] = snapshot.docs.map((doc) => {
+				const data = doc.data();
+				const firstTile = data.tiles?.[0];
+				const thumbnail = firstTile?.album?.imageUrl || null;
+				
+				return {
+					id: doc.id,
+					title: data.title,
+					thumbnail,
+				};
+			});
+			setTopsters(topsterList)
 		}
 		getTopsters();
 	}, [userId]);
@@ -76,24 +84,25 @@ export default function Page() {
 				)}
 
 				<button className="logout-button" onClick={async () => {
-				await signOut(auth);
-				router.push("/");
+					await signOut(auth);
+					router.push("/");
 				}}>
-				Log Out
+					Log Out
 				</button>
 
 				<h2>Your Topsters</h2>
 
 				{topsters.length === 0 ? (
-				<p>No topsters yet!</p>
+					<p>No topsters yet!</p>
 				) : (
 					<div className="button-grid">
 						{topsters.map((topster) => (
 							<ButtonCard
-								key={topster.id}
-								title={topster.title}
-								onEdit={() => handleEditTopster(topster.id)}
-								onDelete={() => handleDeleteTopster(topster.id)}
+								key = {topster.id}
+								title = {topster.title}
+								thumbnail = {topster.thumbnail}
+								onEdit = {() => handleEditTopster(topster.id)}
+								onDelete = {() => handleDeleteTopster(topster.id)}
 							/>
 						))}
 					</div>
