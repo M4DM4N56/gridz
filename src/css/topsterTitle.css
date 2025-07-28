@@ -1,9 +1,4 @@
-.topster-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
+
 
 .topster-title-editor {
   margin-bottom: 1rem;

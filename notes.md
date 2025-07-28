@@ -1,37 +1,17 @@
-# GRIDZ NOTES
-
-## PLANNING
-### MVP
-- log in functionality (firebase auth)
-- one topster grid per account
-- search Last.fm albums
-- place albums into grid
-- download the topster as image
-
+# PLANNING
 
 ### SHORT-TERM
 
-1. refactor code and improve account page
-        - gridz css files can use some consolidation
-    - account page 
-        - should display a button for each topster to edit
-            - extra button for 'delete topster' option. maybe prompt again for safety
-        - add a "create new topster button"
-        - restyle account page
-    - email address + username not storing at userid/ its storing at userid/topster
+1. make first tile in topster as card thumbnail
+    - if first tile is empty, use some default image
+    - add a nice hover overlay
 
------------------------------------ PUSH -----------------------------------
+2. implement proper navBar.
+    - none on app/page
+    - account and gridz page:
+        - My Account | Search | Log Out
 
-2. let users search up usernames
-    - unique usernames?
-    - "search" on the navbar at all times
-    - users must enter the exact username of search
-    - brings them to their account page
-        - same as account page, but edit privileges removed
-
------------------------------------ PUSH -----------------------------------
-
-3. add some basic polish!
+3. add some basic polish
     - update log in page buttons + input fields + error messages
         - fix mobile layout
     - change sidebar buttons to tabs
@@ -41,35 +21,19 @@
         - custom background color (look into rgb popup for users)
             - https://www.npmjs.com/package/react-colorful or `<input type="color">`
 
------------------------------- PUSH + DEPLOY -------------------------------
+4. let users search up usernames
+    - unique usernames?
+    - "search" on the navbar at all times
+    - users must enter the exact username of search
+    - brings them to their account page
+        - same as account page, but edit privileges removed
 
+------------------------------ DEPLOY -------------------------------
 
-
-### LONG-TERM
-1. add hardcoded albums to searchbar
-    - add functionality to click album, then it appears in first available empty slot
-    - add functionality to drag them in
-        - look into "react-dnd" or "dnd-kit"
-2. connect to last.fm api and add search functionality
-3. make settings tab for dimensions, title(s), background, font
-
-4. improve on non-topster pages and header
-5. connect to firebase and add auth for persistent data
-    - topsters will be linked to gmail accounts via firebase auth
----------------------------DONE---------------------------
-6. make multiple topsters possible per account 
-
----------------------------------------------------------------------------------------------
-
-7. export functionality
-8. create user profile page
+5. export functionality
+6. create user profile page
     - user's reviews, lists, and topsters can all be viewed here
-9. reviews
+7. reviews
     - users can search for an album, and give it a rating from 0-100
-10. user album lists
+8. user album lists
     - lists have albums strung vertically, horizontal space is for user review num + text
-11. get friends to make an account :D
-
-
-## WHAT I LEARNED ABOUT BACKEND + APIs
-- nothing so far

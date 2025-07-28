@@ -1,3 +1,10 @@
+.topster-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .topster-layout {
   display: flex;
   flex-wrap: wrap;

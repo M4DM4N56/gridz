@@ -1,4 +1,4 @@
-import { UserProvider, useUser } from "../contexts/userContext";
+import { UserProvider } from "../contexts/userContext";
 
 export const metadata = {
   title: "gridz",

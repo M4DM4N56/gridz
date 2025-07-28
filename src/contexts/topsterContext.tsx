@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { saveTopster } from "../lib/firebase";
 import { useUser } from "../contexts/userContext"
+import { getTopster } from "../lib/firebase";
 
 const MAX_DIMENSION: number = 10;
 // create topster context, defaulting to null
@@ -43,8 +44,8 @@ type TopsterProviderProps = {
 // must have children as arguments so children can inherit the provider's context
 export function TopsterProvider({topsterId, children}: TopsterProviderProps){
 
-    const [title, setTitle] = useState<string>("untitled");
-    const {user, userId, userEmail} = useUser();
+    const [title, setTitle] = useState<string>("Untitled Topster");
+    const {userId, userEmail} = useUser();
 
     // set up default dimensions for row/col
     const [numCols, setNumCols] = useState(5);
@@ -52,6 +53,31 @@ export function TopsterProvider({topsterId, children}: TopsterProviderProps){
 
     // has loaded checks if user has logged in yet. only updates topster if has loaded
     const [hasLoaded, setHasLoaded] = useState(false);
+
+    // once userId and topsterId are loaded, load all the topster information
+    useEffect(() => {
+      if (!userId || !topsterId) return;
+
+      const loadTopster = async () => {
+        const data = await getTopster(userId, topsterId);
+        if (!data) return;
+
+        setTitle(data.title ?? "Untitled Topster");
+        setNumCols(data.cols ?? 5);
+        setNumRows(data.rows ?? 5);
+
+        const loadedTiles: Tile[] = Array.from({ length: MAX_DIMENSION * MAX_DIMENSION }, (_, i) => ({
+          id: `tile-${i}`,
+          album: data.tiles?.[i]?.album ?? undefined,
+        }));
+
+        setTiles(loadedTiles);
+        setHasLoaded(true);
+      };
+
+      loadTopster();
+    }, [userId, topsterId]);
+
 
     // create array of tiles, maxdim x maxdim, set all albums to undefined
     const [tiles, setTiles] = useState<Tile[]>(() =>
@@ -95,17 +121,12 @@ export function TopsterProvider({topsterId, children}: TopsterProviderProps){
 
       // only call timeout once after each autosave so function isnt spammed 
       return () => clearTimeout(timeout);
-      }, [tiles, numRows, numCols, title, userId, hasLoaded, topsterId]); // when any of these are changed, run effect
-
+    }, [tiles, numRows, numCols, title, userId, hasLoaded, topsterId]); // when any of these are changed, run effect
 
 
     // change row/cols -- only between 1-10
-    function changeRows(change: number){
-        setNumRows(change)
-    }
-    function changeCols(change: number){
-        setNumCols(change)
-    }
+    function changeRows(change: number){ setNumRows(change) }
+    function changeCols(change: number){ setNumCols(change) }
 
 
     function addAlbum(newAlbum: Album) {
