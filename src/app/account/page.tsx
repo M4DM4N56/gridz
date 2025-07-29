@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, auth } from "../../config/firebase";
-import { signOut, User } from "firebase/auth";
+import { User } from "firebase/auth";
 import RequireAuth from "../../components/requireAuth";
 import ButtonCard from "../../components/buttonCard";
+import NavBar from "../../components/navBar";
 
 import { useUser } from "../../contexts/userContext"
 
@@ -77,18 +78,13 @@ export default function Page() {
 
 	return <>
 		<RequireAuth>
+			
+			<NavBar />
 
 			<div className="account-container">
 				{user?.displayName && (
 					<h1 className="welcome-text">  Welcome, {user.displayName}! </h1>
 				)}
-
-				<button className="logout-button" onClick={async () => {
-					await signOut(auth);
-					router.push("/");
-				}}>
-					Log Out
-				</button>
 
 				<h2>Your Topsters</h2>
 

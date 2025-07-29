@@ -11,6 +11,8 @@ import RequireAuth from "../../components/requireAuth";
 import Sidebar from "../../components/sideBar"
 import TopsterGrid from "../../components/topsterGrid"
 import TopsterTitleEditor from "../../components/topsterTitleEditor";
+import NavBar from "../../components/navBar";
+
 
 import "../../css/globals.css";
 import "../../css/page-layout.css";
@@ -25,32 +27,32 @@ export default function Page() {
 
   if (!topsterId) return <p>Error: No topster ID provided.</p>;
 
-  return <div>
+  return <>
 
-        <RequireAuth>
-          <DndProvider backend={HTML5Backend}>
-            <TopsterProvider topsterId={topsterId}>
+    <NavBar/>
 
-              <TopsterInitializer topsterId={topsterId}/>
+    <RequireAuth>
+      
+      <DndProvider backend={HTML5Backend}>
+        <TopsterProvider topsterId={topsterId}>
 
-              <h1>gridz</h1>
-              <Link href="/account" className="page-link">Profile</Link>
+          <TopsterInitializer topsterId={topsterId}/>
 
-              <div className="topster-layout">
-                <Sidebar />
+          <div className="topster-layout">
+            <Sidebar />
 
-                <div className="topster-grid-wrapper">
-                  <div className="topster-content">
-                    <TopsterTitleEditor />
-                    <TopsterGrid />
-                  </div>
-                </div>
-                
+            <div className="topster-grid-wrapper">
+              <div className="topster-content">
+                <TopsterTitleEditor />
+                <TopsterGrid />
               </div>
+            </div>
+            
+          </div>
 
-            </TopsterProvider>
-          </DndProvider>
-        </RequireAuth>
+        </TopsterProvider>
+      </DndProvider>
+    </RequireAuth>
 
-  </div>
+  </>
 }
